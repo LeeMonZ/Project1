@@ -1,0 +1,5 @@
+[defaults]
+host_key_checking = false
+inventory         = hosts.txt
+ansible_ssh_private_key_file = <key> - задать общий ключ
+
