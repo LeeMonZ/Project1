@@ -1,0 +1,12 @@
+---
+- name: connection test
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: Install lighttpd
+    apk: name=lighttpd state=installed
+
+  - name: Start and enable
+    service: name=lighttpd state=started
+  
