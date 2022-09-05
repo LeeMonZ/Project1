@@ -1,0 +1,24 @@
+---
+- name: connection test
+  hosts: all
+  become: yes
+  
+  vars:
+    src_index: /home/lester/gitproject/Project1/Ansible/lighttpd/index.html
+    dest_index: /usr/lib/lighttpd/index.html
+    src_conf: /home/lester/gitproject/Project1/Ansible/lighttpd/lighttpd.conf
+    dest_conf: /usr/lib/lighttpd/lighttpd.conf
+  tasks:
+  - name: Check OS
+    debug: var=ansible_os_family
+  - name: Copy homepage and config
+    copy: src={{ src_index }} dest={{dest_index }} mode=0555
+    copy: src={{ src_conf }} dest={{dest_conf }} mode=0555
+    notify: Restart lighttpd
+  - name: Start lighttpd
+    shell: lighttpd -f /usr/lib/lighttpd/lighttpd.conf
+
+    ignore_errors: yes
+  handlers:
+  - name: Restart lighttpd
+    shell: killall lighttpd && lighttpd -f /usr/lib/lighttpd/lighttpd.conf

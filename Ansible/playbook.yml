@@ -1,22 +1,17 @@
 ---
-- name: connection test
+- name: Playbook for variables
   hosts: all
   become: yes
   
   vars:
-    src_index: /home/lester/gitproject/Project1/Ansible/lighttpd/index.html
-    dest_index: /usr/lib/lighttpd/index.html
-    src_conf: /home/lester/gitproject/Project1/Ansible/lighttpd/lighttpd.conf
-    dest_conf: /usr/lib/lighttpd/lighttpd.conf
+    message1: Hello
+    message2: World
   tasks:
-  - name: Copy homepage and config
-    copy: src={{ src_index }} dest={{dest_index }} mode=0555
-    copy: src={{ src_conf }} dest={{dest_conf }} mode=0555
-    notify: Restart lighttpd
-  - name: Start lighttpd
-    shell: lighttpd -f /usr/lib/lighttpd/lighttpd.conf
-
-    ignore_errors: yes
-  handlers:
-  - name: Restart lighttpd
-    shell: killall lighttpd && lighttpd -f /usr/lib/lighttpd/lighttpd.conf
+  - name: Print message variable
+    debug:
+      var: message1
+  - debug:
+      msg: "Hi {{ message2 }}"
+  - set_fact: full_message="{{ message1 }} {{ message2 }}"
+  - debug:
+      var: full_message
